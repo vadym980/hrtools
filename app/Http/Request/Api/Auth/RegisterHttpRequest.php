@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Request\Api\Auth;
 
 use App\Http\Request\ApiFormRequest;
+use Illuminate\Validation\Rules\Password;
 
 class RegisterHttpRequest extends ApiFormRequest
 {
@@ -17,7 +18,7 @@ class RegisterHttpRequest extends ApiFormRequest
     {
         return [
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:8|string',
+            'password' => ['required',Password::min(8)->mixedCase()->numbers()],
             'name' => 'required|string|min:2',
             'lastname' => 'required|string|min:2',
             'phone' => 'required|string|min:2'

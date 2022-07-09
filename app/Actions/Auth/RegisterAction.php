@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace App\Actions\Auth;
 
-use App\Actions\Auth\RegisterRequest;
-use App\Mail\WelcomeEmail;
 use App\Repository\UserRepository;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Mail\Mailer;
+use App\Mail\WelcomeEmail;
+use Tymon\JWTAuth\Facades\JWTAuth;
+
 
 final class RegisterAction
 {
-    public function __construct(private UserRepository $userRepository, private Mailer $mailer)
+    public function __construct(private UserRepository $userRepository)
     {
     }
 
@@ -24,14 +26,15 @@ final class RegisterAction
             'lastname' => $request->getLastName(),
             'phone' => $request->getPhone()
         ]);
-        $token = auth()->login($user);
 
-        $this->mailer->to($user)->send(new WelcomeEmail());
+        $token = JWTAuth::fromUser($user);
+
+        event(new Registered($user));
 
         return new AuthenticationResponse(
             $token,
             'bearer',
-            auth()->factory()->getTTL() * 60
+            auth('api')->factory()->getTTL() * 60
         );
     }
 }

@@ -21,13 +21,6 @@ Route::prefix('v1')->group(function () {
     //Route::group(['prefix' => 'auth'], function () {
         Route::post('/register', [AuthController::class, 'register']);
         Route::post('/login', [AuthController::class, 'login']);
-        /*
-        Route::get('/me', [AuthController::class, 'me']);
-        Route::put('/me', [AuthController::class, 'update']);
-        Route::post('/logout', [AuthController::class, 'logout']);
-        Route::post('/reset-password', [AuthController::class, 'resetPassword']);
-        Route::post('/new-password', [AuthController::class, 'applyNewPassword']);
-        */
     //});
 
     Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

@@ -37,4 +37,5 @@ final class AuthController extends ApiController
 
         return $this->successResponse($authenticationResponseArrayPresenter->present($response));
     }
+
 }
